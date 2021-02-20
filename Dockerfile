@@ -2,7 +2,7 @@ FROM docker.io/library/ubuntu:20.10
 
 RUN apt update -y \
     && apt install -y --no-install-recommends software-properties-common \
-    curl wget pkg-config locales git clang build-essential \
+    curl wget pkg-config locales git build-essential \
     openssl libssl-dev libjsoncpp-dev uuid-dev zlib1g-dev libc-ares-dev\
     postgresql-server-dev-all libmariadbclient-dev libsqlite3-dev nano npm \
     libsodium-dev && locale-gen en_US.UTF-8 && npm install -g n && n latest
@@ -10,12 +10,11 @@ RUN apt update -y \
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8 \
-    CC=/usr/bin/clang \
-    CXX=/usr/bin/clang++ \
-    AR=llvm-ar \
-    RANLIB=llvm-ranlib \
-    BOOST_INCLUDE_DIR="${HOME}/opt/boost_1_67_0" \  
-    IROOT=/install
+    CC=/usr/bin/gcc \
+    CXX=/usr/bin/g++ \
+    AR=gcc-ar \
+    RANLIB=gcc-ranlib \
+    BOOST_INCLUDE_DIR="${HOME}/opt/boost_1_67_0"
 
 WORKDIR /root
 
@@ -29,7 +28,7 @@ RUN git clone https://github.com/an-tao/drogon && \
     git submodule update --init && \
     mkdir build && \
     cd build && \
-    cmake .. && \
+    cmake -DCMAKE_CXX_FLAGS="-fcoroutines" .. && \
     make && make install 
 	
 ARG DEBIAN_FRONTEND=noninteractive
