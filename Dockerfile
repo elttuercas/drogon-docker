@@ -20,7 +20,7 @@ ENV LANG=en_US.UTF-8 \
 
 WORKDIR /root
 
-RUN git clone https://github.com/Kitware/CMake
+RUN git clone --depth 1 --branch v3.22.1 https://github.com/Kitware/CMake
 RUN cd CMake && ./bootstrap && make install
 
 WORKDIR /root
