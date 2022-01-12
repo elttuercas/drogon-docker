@@ -20,10 +20,9 @@ ENV LANG=en_US.UTF-8 \
 
 WORKDIR /root
 
-RUN git clone --depth 1 --branch v3.22.1 https://github.com/Kitware/CMake
-RUN cd CMake && ./bootstrap && make install
+RUN git clone --depth 1 --branch v3.22.1 https://github.com/Kitware/CMake && \
+    cd CMake && ./bootstrap && make install
 
-WORKDIR /root
 RUN git clone https://github.com/an-tao/drogon && \
     cd drogon && \
     git submodule update --init && \
@@ -31,3 +30,4 @@ RUN git clone https://github.com/an-tao/drogon && \
     cd build && \
     cmake -DCMAKE_CXX_FLAGS="-fcoroutines" .. && \
     make install
+
